@@ -5,7 +5,8 @@
     1. [Moving a vehicle](#moving-a-vehicle)
     2. [Vertical key events](#vertical-key-events)
     3. [Horizontal key events](#horizontal-key-events)
-    4. [Vehicle drag]()
+    4. [Vehicle drag](#vehicle-drag)
+    5. [Vehicle traction](#vehicle-traction)
 
 
 
