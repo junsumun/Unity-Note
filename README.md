@@ -2,11 +2,15 @@
 
 ## Table of Contents
 1. [Vehicle Physics](#vehicle-physics)
-    1. [Moving a vehicle](#moving-a-vehicle)
-    2. [Vertical key events](#vertical-key-events)
-    3. [Horizontal key events](#horizontal-key-events)
-    4. [Vehicle drag](#vehicle-drag)
-    5. [Vehicle traction](#vehicle-traction)
+    * [Moving a vehicle](#moving-a-vehicle)
+    * [Vertical key events](#vertical-key-events)
+    * [Horizontal key events](#horizontal-key-events)
+    * [Vehicle drag](#vehicle-drag)
+    * [Vehicle traction](#vehicle-traction)
+2. [Camera Control](#camera-control)
+    * [Setup initial position](#setup-initial-position)
+    * [Camera rotation](#camera-rotation)
+    * [Camera movement](#camera-movement)
 
 
 
@@ -104,3 +108,65 @@ void Update()
   // if t = 1, returns b vector
   MoveForce = Vector3.Lerp(MoveForce.normalized, transform.forward, Traction * Time.deltaTime) * MoveForce.magnitude;
 }
+```
+
+### Camera Control
+
+#### Setup initial position
+
+To find an offset value of the main camera from a target object.
+
+```cs
+public Transform TargetObject;
+
+private Vector3 initialOffset;
+
+void Start()
+{
+  // First calculate the offset value when a game starts and we use this value to reposition the main camera
+  initialOffset = transform.position - TargetObject.position;
+}
+```
+
+A problem with this approach is that the offset value could be changed when you edit the position of the main camera in the Unity editor. Therefore, in order to keep the offset value of the main camera consistently.
+
+```cs
+public Transform TargetObject;
+
+public Vector3 CameraOffset; // This value can be changed to adjust a position of the main camera
+
+void Start()
+{
+  transform.position = TargetObject.position + CameraOffset;
+}
+```
+
+#### Camera rotation
+
+By rotating a camera, we can provide different kinds of views eg. top view
+
+```cs
+public Vector3 CameraRotation; // We can tweak this (x, y, z) value to adjust the rotation of the camera
+
+void Start()
+{
+  transform.rotation = Quaternion.Euler(cameraRotation.x, cameraRotation.y, cameraRotation.z);
+}
+```
+
+#### Camera movement
+
+To keep the objets in the camera's sight. We need to make the camera to follow a target object.
+
+```cs
+  public Transform TargetObject;
+
+  public Vector3 CameraOffset;
+  
+  public float FollowSpeed;
+
+  void Update()
+  {
+    transform.position = transform.position = Vector3.Lerp(transform.position, targetObject.position + cameraOffset, followSpeed * Time.deltaTime);
+  }
+```
